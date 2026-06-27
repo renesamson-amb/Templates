@@ -22,7 +22,8 @@ namespace bits_of_q
     struct Tuple<ELEM0, ELEMS1toN...> : Tuple<ELEMS1toN...>
     {
         explicit constexpr Tuple(ELEM0 e1, ELEMS1toN... rest) :
-        Tuple<ELEMS1toN...>(rest ...), data(e1)
+                    Tuple<ELEMS1toN...>(rest ...)
+                    , data(e1)
         {}
         ELEM0 data;
     };
@@ -51,7 +52,8 @@ namespace bits_of_q
                 return static_cast<TUPLE&>(t).data;
             }
         };
-    } // namespace detail
+    } 
+    // namespace detail
     template<size_t i, typename TUPLE>
     constexpr decltype(auto) get(TUPLE &tuple)
     {
