@@ -45,11 +45,26 @@ __WHAT IS TUPLE__
         recursive allows for simpler algorithms -> so this is what we will start with.....
     	But we will revisit the multiple inheritance as well...
 
-Before proceeding with tuple we are looking at how the make_tuple function works. The possible implementation section in cpp section gives how make_tuple could create a tuple by using __std::unwrap_ref_decay_t__
+Before proceeding with tuple we are looking at how the make_tuple function works. The possible implementation section in cpp 
+section gives how make_tuple could create a tuple by using __std::unwrap_ref_decay_t__
 
 The deduction guide simply explains the relation between the arguments used
 for construction of tuple and the actual constructor that needs to be called to build the object...
 
+Know the difference between auto type and decltype(auto). The latter case can deduce reference types as well....
+
+Also std::remove_cvref_t -> This is used for removing the const and volatile qualifiers for the tuple type....
+
+Use std::remove_cvref_t when:
+
+    You are writing generic template containers and need to know the exact type to instantiate  (e.g., if someone passes a const int[5]&, 
+    you want to allocate a int[5], not an int*).You want a cleaner, faster-compiling alternative to std::decay_t when you know your type is a basic scalar, class, or struct.
+    
+Use std::decay_t when:
+    
+    You want to store a type exactly the way __auto would deduce it__ 
+    You need to store arguments passed via forward references (Args&&...) inside a container or tuple 
+    (like std::make_tuple does internally) and want arrays/functions to safely become pointers so they do not dangle.
 
 
 

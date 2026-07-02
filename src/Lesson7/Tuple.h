@@ -57,6 +57,6 @@ namespace bits_of_q
     template<size_t i, typename TUPLE>
     constexpr decltype(auto) get(TUPLE &tuple)
     {
-        return detail::get_impl<i, std::remove_ref_t<TUPLE>>::get(tuple);
+        return detail::get_impl<i, std::remove_cvref_t<TUPLE>>::get(tuple);
     }
 } // namespace_bits_of_q
