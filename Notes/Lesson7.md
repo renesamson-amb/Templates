@@ -68,3 +68,10 @@ Use std::decay_t when:
 
 
 
+While testing the rvalue, we are regular reference to rvalue reference(&&) After this before we check if the type is a const, we should remove the reference type
+using std::remove_reference_t <>; Without this std::is_const won't work propertly for rvalue....
+
+Also there is way to check if the type is a lvalue reference or not
+std::is_lvalue_reference<>;
+
+

@@ -47,16 +47,21 @@ namespace bits_of_q
         struct get_impl<0, TUPLE>
         {
             template<typename T>
-            constexpr static decltype(auto) get(T& t)
+            constexpr static decltype(auto) get(T&& t)
             {
-                return static_cast<TUPLE&>(t).data;
+		constexpr bool is_lvalue = std::is_lvalue_reference<T>;
+		constexpr bool is_const = std::is_const_v<std::remove_reference_t<T>>;
+		if(is_const)
+			return static_cast<const TUPLE&>(t).data;
+		else
+                	return static_cast<TUPLE&>(t).data;
             }
         };
-    } 
+    }
     // namespace detail
     template<size_t i, typename TUPLE>
-    constexpr decltype(auto) get(TUPLE &tuple)
+    constexpr decltype(auto) get(TUPLE&& tuple) // ---> Perfect forwarding applied, instead of simply a reference its a rvalue ref...
     {
-        return detail::get_impl<i, std::remove_cvref_t<TUPLE>>::get(tuple);
+        return detail::get_impl<i, std::remove_cvref_t<TUPLE>>::get(std::forward<TUPLE>(tuple));
     }
 } // namespace_bits_of_q

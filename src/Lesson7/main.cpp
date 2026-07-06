@@ -17,4 +17,13 @@ int main()
     Tuple tup2{5, false, 4};
     std::cout <<  get<1, decltype(tup2)>(tup2) << std::endl;
     std::cout << tup2.data << std::endl;
+
+    const Tuple tup3{5, true, 10};
+    std::cout << get<2>(tup2) << std::endl;
+    std::cout << tup.data << std::endl;
+
+    // Now Rvalues Tuples ...
+     std::cout << get<2>(Tuple {10, false, 15}) << std::endl;
+
+    return 0;
 }
