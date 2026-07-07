@@ -47,6 +47,7 @@ __WHAT IS TUPLE__
 
 Before proceeding with tuple we are looking at how the make_tuple function works. The possible implementation section in cpp 
 section gives how make_tuple could create a tuple by using __std::unwrap_ref_decay_t__
+![alt text](image-1.png)
 
 The deduction guide simply explains the relation between the arguments used
 for construction of tuple and the actual constructor that needs to be called to build the object...
@@ -74,4 +75,30 @@ using std::remove_reference_t <>; Without this std::is_const won't work propertl
 Also there is way to check if the type is a lvalue reference or not
 std::is_lvalue_reference<>;
 
+An alternate to decltype 
 
+    std::declval<T>() -> can be used when Type T does not have a default constructor
+
+    struct nodefault
+    {
+        nodefault(int x ); // ---> Note this structure does not have a default constructor....
+        double ret_val() { return 5.0; }
+    };
+
+    template<typename T>
+    struct TypeTT
+    {
+        using type = decltype(std::declval<T>()::ret_val()); // ---> This is used to call T() which does not have a default constructor ... 
+    };
+
+    int main()
+    {
+        TypeTT<nodefault>::type x = 52.0
+    }
+
+
+Important points to remember:
+
+    std::declval<T>() ------> Instantiates a T&& (rvalue)
+    std::declval<T&>()  ----> Instantiates a T&  (lvalue)
+    std::declval<const T>()-> Mimics a const rvalue of T (const T&&)
