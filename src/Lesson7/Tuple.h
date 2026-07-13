@@ -33,9 +33,9 @@ namespace bits_of_q
     Tuple(T e1, Ts... rest) -> Tuple<std::unwrap_ref_decay_t<T> , std::unwrap_ref_decay_t<Ts>...>;
 
     template<typename... ELEMS>
-    auto make_tuple(ELEMS... elems)
+    auto make_tuple(ELEMS&&... elems)
     {
-        return Tuple<std::unwrap_ref_decay_t<ELEMS>...>(elems...);
+        return Tuple<std::unwrap_ref_decay_t<ELEMS>...>(std::forward<ELEMS>(elems)...);
     }
 
     ///////////////////////////// Get ////////////////////////////////////////////
@@ -49,12 +49,19 @@ namespace bits_of_q
             template<typename T>
             constexpr static decltype(auto) get(T&& t)
             {
-		constexpr bool is_lvalue = std::is_lvalue_reference<T>;
-		constexpr bool is_const = std::is_const_v<std::remove_reference_t<T>>;
-		if(is_const)
-			return static_cast<const TUPLE&>(t).data;
-		else
-                	return static_cast<TUPLE&>(t).data;
+                constexpr bool is_lvalue = std::is_lvalue_reference_v<T>;
+                constexpr bool is_const = std::is_const_v<std::remove_reference_t<T>>;
+
+                using data_t = front_t<TUPLE>;
+
+                if constexpr (is_lvalue && is_const)
+                    return static_cast<const data_t&>(static_cast<const TUPLE&>(t).data);
+                if constexpr (is_lvalue && !is_const)
+                    return static_cast<data_t&>(static_cast<TUPLE&>(t).data);
+                if constexpr (!is_lvalue && !is_const)
+                    return static_cast<data_t&&>(static_cast<TUPLE&&>(t).data);
+                if constexpr (!is_lvalue && is_const)
+                    return static_cast<const data_t&&>(static_cast<const TUPLE&&>(t).data);
             }
         };
     }
