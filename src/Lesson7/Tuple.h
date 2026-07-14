@@ -21,9 +21,10 @@ namespace bits_of_q
     template<typename ELEM0, typename... ELEMS1toN>
     struct Tuple<ELEM0, ELEMS1toN...> : Tuple<ELEMS1toN...>
     {
-        explicit constexpr Tuple(ELEM0 e1, ELEMS1toN... rest) :
-                    Tuple<ELEMS1toN...>(rest ...)
-                    , data(e1)
+        template<typename T, Typename... Ts>
+        explicit constexpr Tuple(T&& e1, Ts&&... rest) :
+                    Tuple<ELEMS1toN...>(std::forward<Ts>(rest) ...)
+                    , data(std::forward<T>(e1))
         {}
         ELEM0 data;
     };

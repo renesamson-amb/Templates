@@ -43,7 +43,7 @@ int main()
     // The result is 
     // {default constructs : 1, copies:1, moves:1}
 
-    make_tuple(8, c, 1.5);
+    [[maybe_unused]]auto t = make_tuple(8, c, 1.5);
     std::cout << c.stats << "\n"; //{default constructs : 0, copies:4, moves:0}
 
 

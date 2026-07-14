@@ -102,3 +102,14 @@ Important points to remember:
     std::declval<T>() ------> Instantiates a T&& (rvalue)
     std::declval<T&>()  ----> Instantiates a T&  (lvalue)
     std::declval<const T>()-> Mimics a const rvalue of T (const T&&)
+
+
+We use the copystats object to record the number of copies happening....
+INitially the make_tuple function generates 
+{default constructs : 0, copies:4, moves:0}
+
+So we do a forward instead of copy
+Which provides
+{default constructs : 0, copies:3, moves:0} -> 1 lesser.... From here we go to the tuple class itself...
+
+NOTE: For a && to mean a forwarding reference, type deduction should be involved....
