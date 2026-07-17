@@ -1,7 +1,6 @@
 In this lesson lets consider std::tuple 
 ![alt text](image.png)
 
-
 We also need to figure out how to map the values to the corresponding types in tuple. For that we need to figure out steps at compile time and ensure __no unnecessary copies/moves__ at runtime
 + lvalue + rvalue
 + perfect forwarding
@@ -45,7 +44,14 @@ __WHAT IS TUPLE__
         recursive allows for simpler algorithms -> so this is what we will start with.....
     	But we will revisit the multiple inheritance as well...
 
-Before proceeding with tuple we are looking at how the make_tuple function works. The possible implementation section in cpp 
+Before proceeding with tuple we are looking at how the make_tuple function works. 
+
+* Here we aim for simplicity and speed....
+* recursive allows for simpler algorithms -> so this is what we will start with.....
+* But we will revisit the multiple inheritance as well...
+
+
+The possible implementation section in cpp 
 section gives how make_tuple could create a tuple by using __std::unwrap_ref_decay_t__
 ![alt text](image-1.png)
 
